@@ -22,3 +22,11 @@ export function logout() {
     method: 'post'
   })
 }
+export function resetToken({commit}) {
+  return new Promise(resolve =>{
+    removeToken();
+    commit("RESET_STATE");
+    commit('SET_ROLES', []);
+    resolve();
+  })
+}
