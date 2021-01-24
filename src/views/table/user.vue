@@ -27,7 +27,14 @@
         </template>
       </el-table-column>
       <el-table-column prop="userName" label="姓名" />
-      <el-table-column prop="loginName" label="登录账号" />
+      <el-table-column prop="loginName" label="登录账号"  width="80"/>
+      <el-table-column prop="role" label="角色" width="150" align="center">
+              <template slot-scope="scope">
+                <span v-if="scope.row.role=='admin'" style="color:red;">超级管理员</span>
+                <span v-if="scope.row.role=='user'" style="color:green;">区管理员</span>
+              </template>
+      </el-table-column>
+
       <el-table-column prop="userAddress" label="地址" />
       <el-table-column prop="userDate" label="创建日期" />
 
@@ -44,6 +51,7 @@
       </el-table-column>
     </el-table>
     <el-pagination
+      background
       :current-page="page"
       :page-sizes="[5, 10, 20]"
       :page-size="size"
@@ -68,6 +76,18 @@
            <el-form-item label="登录名" style="width:300px">
                <el-input v-model="user.loginName" placeholder="请输入用户名" />
           </el-form-item>
+
+        <el-form-item label="角色" style="width:400px">
+        <el-select v-model="user.role" placeholder="选择角色">
+          <el-option
+            v-for="item in options"
+            :key="item.role"
+            :label="item.label"
+            :value="item.role">
+          </el-option>
+        </el-select>
+        </el-form-item>
+
           <el-form-item label="地址" style="width:400px">
                <el-input v-model="user.userAddress" placeholder="请输入地址" />
           </el-form-item>
@@ -114,7 +134,15 @@ export default {
       addFlag: true,
       curId: '' ,
 
-      visible2:true
+      visible2:true,
+      options: [{
+        role: 'admin',
+        label: '超级管理员'
+      }, {
+        role: 'user',
+        label: '区管理员'
+      }],
+      role: ''
     }
 
   },
