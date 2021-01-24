@@ -12,8 +12,12 @@
         :collapse-transition="false"
         mode="vertical"
       >
-        <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
-      </el-menu>
+        <sidebar-item
+          v-for="route in permission_routes"
+          :key="route.path"
+          :item="route"
+          :base-path="route.path"
+        />      </el-menu>
     </el-scrollbar>
   </div>
 </template>
@@ -28,9 +32,11 @@ export default {
   components: { SidebarItem, Logo },
   computed: {
     ...mapGetters([
+      // 动态路由 增加permission_routes
+      'permission_routes',
+
       'sidebar'
     ]),
-
     routes() {
       return this.$router.options.routes
     },

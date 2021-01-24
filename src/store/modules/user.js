@@ -1,15 +1,16 @@
 import { login, DongtRouter, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import router, { resetRouter } from '@/router'
+import { resetRouter } from '@/router'
 
 const state = {
   token: getToken(),
   name: '',
   avatar: '',
-  roles:[]
+  roles: []
 }
 
 const mutations = {
+
   RESET_STATE: (state) => {
     Object.assign(state, getDefaultState())
   },
@@ -22,7 +23,6 @@ const mutations = {
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
   },
-
   SET_ROLES: (state, roles) => {
     state.roles = roles
   }
@@ -35,7 +35,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        //console.log("modules中的data " + data)
+        console.log("modules中的data " + data)
         commit('SET_TOKEN', data)
         setToken(data)
         resolve()
@@ -55,13 +55,7 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { roles, name, avatar, introduction } = data
-
-        // 角色必须非空
-        console.log("modules 中的user " + roles)
-        if (!roles || roles.length <= 0) {
-          reject('getInfo: 角色必须是飞空的数组')
-        }
+        const {roles, name, avatar } = data
         commit('SET_ROLES', roles)
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
@@ -77,6 +71,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
         commit('SET_TOKEN', '')
+        commit('SET_ROLES', [])
+
         removeToken()
         resetRouter()
         resolve()
@@ -90,8 +86,9 @@ const actions = {
   resetToken({ commit }) {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
-      removeToken();
+      commit('SET_ROLES', [])
 
+      removeToken()
       resolve()
     })
   }

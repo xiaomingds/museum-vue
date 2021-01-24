@@ -28,19 +28,24 @@ export const constantRoutes = [
       component: () => import('@/views/dashboard/index'),
       meta: { title: '智慧博物馆', icon: 'dashboard' }
     }]
-  },
+  }
+  ]
+/**
+ * 动态路由
+ */
+export const asyncRoutes = [
   {
     path: '/example',
     component: Layout,
     redirect: '/example/table',
     name: 'Example',
-    meta: { title: '人员管理', icon: 'example' },
+    meta: { title: '人员管理', icon: 'example', roles: ['admin'] },
     children: [
       {
         path: 'table',
         name: 'Table',
         component: () => import('@/views/table/index'),
-        meta: { title: '员工管理', icon: 'user'} // you can set roles in root nav
+        meta: { title: '员工管理', icon: 'user', roles: ['admin'] } // you can set roles in root nav
       }
       // {
       //   path: 'tree',
@@ -67,7 +72,7 @@ export const constantRoutes = [
         path: 'table',
         name: 'Table',
         component: () => import('@/views/table/master'),
-        meta: { title: '网关', icon: 'table' }
+        meta: { title: '网关', icon: 'table' , roles: ['user'] }
       },
       {
         path: 'device',
