@@ -17,12 +17,17 @@
       <!--    <el-button type="primary" @click="openData">展示数据</el-button>-->
     </div>
     <br>
-    <el-table
-      :data="devicelist"
-      border
-      fit
-      highlight-current-row
-    >
+<!--    <el-table-->
+<!--      :data="devicelist"-->
+<!--      border-->
+<!--      fit-->
+<!--      highlight-current-row-->
+<!--    >-->
+      <el-table
+        :data="devicelist"
+        style="width: 100%"
+        border
+        :row-class-name="tableRowClassName">
       <el-table-column label="序号" type="index" width="80px" align="center">
         <template slot-scope="scope">
           <span>{{scope.$index + 1 }}</span>
@@ -98,7 +103,13 @@
 
     },
     methods: {
+      tableRowClassName({row, rowIndex}) {
 
+        if (rowIndex %2 ===0) {
+          return 'success-row';
+        }
+        return '';
+      },
       // 异步好一些
       async getgatewayList() {
         const { data } = await slaveList()
@@ -148,6 +159,12 @@
   }
 </script>
 
-<style scoped>
+<style>
+  .el-table .warning-row {
+    background: #C0C4CC;
+  }
 
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
 </style>

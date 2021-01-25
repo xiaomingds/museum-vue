@@ -3,12 +3,18 @@
 
   <div class="app-container">
 
-    <el-table
-      :data="warningList"
-      border
-      fit
-      highlight-current-row
-    >
+<!--    <el-table-->
+<!--      :data="warningList"-->
+<!--      border-->
+<!--      fit-->
+<!--      highlight-current-row-->
+<!--    >-->
+      <el-table
+        :data="warningList"
+        style="width: 100%"
+        border
+        :row-class-name="tableRowClassName">
+
       <el-table-column label="序号" type="index" width="80px" align="center">
         <template slot-scope="scope">
           <span>{{scope.$index + 1 }}</span>
@@ -52,6 +58,9 @@
       this.getWarningList()
     },
     methods:{
+      tableRowClassName({row, rowIndex}) {
+          return 'warning-row';
+      },
       // 异步好一些
       async getWarningList() {
         const { data } = await warningSlave()
@@ -63,7 +72,12 @@
     }
   }
 </script>
+<style>
+  .el-table .warning-row {
+    background: oldlace;
+  }
 
-<style scoped>
-
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
 </style>
