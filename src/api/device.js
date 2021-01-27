@@ -49,3 +49,9 @@ export function warningSlave() {
     method: 'get'
   })
 }
+export function indexList() {
+  return request({
+    url: '/device/indexList',
+    method: 'get'
+  })
+}

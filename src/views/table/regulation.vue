@@ -35,6 +35,19 @@
       </el-table-column>
       <el-table-column prop="maddr" label="所属网关" />
       <el-table-column prop="saddr" label="物理地址" />
+
+        <el-table-column property="door" label="门开关">
+          <template scope="scope">
+            <el-switch
+              active-color="#13ce66"
+              inactive-color="#dadde5"
+              v-model="scope.row.door"
+              @change=changeSwitch(scope.row)
+            >
+            </el-switch>
+          </template>
+        </el-table-column>
+
       <el-table-column prop="temperature_max" label="最高温度/℃" />
       <el-table-column prop="temperature_min" label="最低温度/℃" />
       <el-table-column prop="humidity_max" label="最大湿度/%RH" />
@@ -70,6 +83,7 @@
         <el-form-item label="最小电量/%" style="width:400px">
           <el-input v-model="device.batterycapacity_min" placeholder="请输入最小电量" />
         </el-form-item>
+
         <el-form-item label="休眠时间(秒)" style="width:400px">
           <el-input v-model="device.sleep" placeholder="请输入休眠时间" />
         </el-form-item>
@@ -79,6 +93,7 @@
         <el-button type="primary" @click="dialogVisible = false">取消</el-button>
       </span>
     </el-dialog>
+
   </div>
 </template>
 
@@ -93,7 +108,6 @@
         masterlist: [],
         selmaddr:'',
         addFlag: true,
-
         dialogVisible: false,
       }
     },
@@ -103,12 +117,40 @@
 
     },
     methods: {
-      tableRowClassName({row, rowIndex}) {
-
+      tableRowClassName({row, rowIndex}) {//表格隔行显示不同的颜色
         if (rowIndex %2 ===0) {
           return 'success-row';
         }
         return '';
+      },
+      changeSwitch (row) {//询问门是否打开
+        const data = {
+          maddr:row.maddr,
+          saddr: row.saddr,
+          door: row.door,
+        };
+        let flag = row.door //保存点击之后v-modeld的值(true，false)
+        row.door = !row.door //保持switch点击前的状态
+        this.$confirm('此操作将打开门, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          if(flag){
+            row.door = true
+            // 逻辑处理
+            this.$message.success('打开成功!')
+          }else{
+            row.door = false
+            // 逻辑处理
+            this.$message.success('关闭成功！')
+          }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消打开'
+          });
+        });
       },
       // 异步好一些
       async getgatewayList() {
