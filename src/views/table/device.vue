@@ -51,7 +51,9 @@
 
 
 <script>
-  import { master,slaveList, mmslaveList} from '@/api/device'
+  import { slaveList, mmslaveList} from '@/api/device'
+  import { master } from '@/api/master'
+
   export default {
     data() {
       return {

@@ -28,15 +28,15 @@
         style="width: 100%"
         border
         :row-class-name="tableRowClassName">
-      <el-table-column label="序号" type="index" width="80px" align="center">
+      <el-table-column label="序号" type="index" width="50px" align="center">
         <template slot-scope="scope">
           <span>{{scope.$index + 1 }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="maddr" label="所属网关" />
-      <el-table-column prop="saddr" label="物理地址" />
+      <el-table-column prop="maddr" label="所属网关" width="50px"  />
+      <el-table-column prop="saddr" label="物理地址" width="80px" />
 
-        <el-table-column property="door" label="门开关">
+        <el-table-column property="door" label="门开关" width="80px">
           <template scope="scope">
             <el-switch
               active-color="#13ce66"
@@ -52,14 +52,23 @@
       <el-table-column prop="temperature_min" label="最低温度/℃" />
       <el-table-column prop="humidity_max" label="最大湿度/%RH" />
       <el-table-column prop="humidity_min" label="最小湿度/%RH" />
-      <el-table-column prop="batterycapacity_max" label="最大电量/%" />
-      <el-table-column prop="batterycapacity_min" label="最小电量/%" />
+
+        <el-table-column prop="lamp" label="灯亮度" width="110px">
+          <template slot-scope="scope">
+            <el-slider v-model="scope.row.lamp"
+                       :format-tooltip = "formatTooltip"
+                       @change="getlamp">
+            </el-slider>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="batterycapacity_min" label="最小电量/%" width="100px"/>
       <el-table-column prop="sleep" label="休眠时间/s" />
-      <el-table-column label="编辑" width="100">
-        <template slot-scope="scope">
-          <el-button  @click="editdevice(scope.row)" type="warning" icon="el-icon-edit" circle></el-button>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="编辑" width="100">-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-button  @click="editdevice(scope.row)" type="warning" icon="el-icon-edit" circle></el-button>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
     </el-table>
     <el-dialog
       title="修改环境信息"
@@ -99,7 +108,9 @@
 
 
 <script>
-  import { master,slaveList, mmslaveList,editDevice} from '@/api/device'
+  import { slaveList, mmslaveList,editDevice,deviceSwitch} from '@/api/device'
+  import { master } from '@/api/master'
+
   export default {
     data() {
       return {
@@ -124,18 +135,16 @@
         return '';
       },
       changeSwitch (row) {//询问门是否打开
-        const data = {
-          maddr:row.maddr,
-          saddr: row.saddr,
-          door: row.door,
-        };
+        const saddr = row.saddr;
+
         let flag = row.door //保存点击之后v-modeld的值(true，false)
         row.door = !row.door //保持switch点击前的状态
-        this.$confirm('此操作将打开门, 是否继续?', '提示', {
+        this.$confirm('此操作将打开/关闭门, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+          deviceSwitch(saddr,flag)
           if(flag){
             row.door = true
             // 逻辑处理
@@ -151,6 +160,12 @@
             message: '已取消打开'
           });
         });
+      },
+      formatTooltip(val){
+        return val;
+      },
+      getlamp(){
+          console.log("鼠标松开后的值 " + this.lamp)
       },
       // 异步好一些
       async getgatewayList() {

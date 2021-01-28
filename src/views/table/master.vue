@@ -17,6 +17,22 @@
       <el-table-column prop="ipaddr" label="IP地址" />
       <el-table-column prop="ostatuscode" label="状态码" />
       <el-table-column prop="ltime" label="最后一次上报时间" />
+      <el-table-column property="sw" label="网关开关" width="80px">
+        <template scope="scope">
+          <el-switch
+            active-color="#13ce66"
+            inactive-color="#dadde5"
+            v-model="scope.row.sw"
+            @change=changeSwitch(scope.row)
+          >
+          </el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column label="清空状态" width="100">
+        <template slot-scope="scope">
+          <el-button type="primary"  size="mini" @click="rest(scope.row)">清空</el-button>
+        </template>
+      </el-table-column>
 <!--      <el-table-column prop="status" label="状态" width="80" align="center">-->
 <!--        <template slot-scope="scope">-->
 <!--          <span v-if="scope.row.status==0" style="color:red;">掉线</span>-->
@@ -25,11 +41,7 @@
 <!--      </el-table-column>-->
 
 
-<!--      <el-table-column label="编辑" width="100">-->
-<!--        <template slot-scope="scope">-->
-<!--          <el-button type="primary" icon="el-icon-edit" size="mini" @click="edituser(scope.row)">编辑</el-button>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+
 <!--      <el-table-column label="删除" width="100">-->
 <!--        <template slot-scope="scope">-->
 <!--          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deluser(scope.row)">删除</el-button>-->
@@ -51,7 +63,7 @@
 </template>
 
 <script>
-import { alldevice } from '@/api/device'
+import { allMaster,masterRest,masterSwitch} from '@/api/master'
 
 export default {
   data() {
@@ -96,11 +108,56 @@ export default {
     },
     // 异步好一些
     async getgatewayList() {
-      const { data } = await alldevice(this.page, this.size)
+      const { data } = await allMaster(this.page, this.size)
       this.allmaster = data.list
       console.log('请求到的设备列表' + '  ' + data.total + '  ' + this.userList)
       this.total = data.total
+    },
+    changeSwitch (row) {//询问门是否打开
+      const maddr = row.maddr;
+      let flag = row.sw //保存点击之后v-modeld的值(true，false)
+        row.sw = !row.sw //保持switch点击前的状态
+      this.$confirm('此操作将打开/关闭网关, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        masterSwitch(maddr,flag)
+        if(flag){
+          row.sw = true
+          // 逻辑处理
+          this.$message.success('打开成功!')
+        }else{
+          row.sw = false
+          // 逻辑处理
+          this.$message.success('关闭成功！')
+        }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消打开'
+        });
+      });
+    },
+    rest(row){
+      const maddr = row.maddr;
+      this.$confirm('是否清空当前网关状态', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+          masterRest(maddr)
+        this.$message.success('清空成功!')
+
+
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消清空'
+        });
+      });
     }
+
   }
 }
 </script>

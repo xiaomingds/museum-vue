@@ -1,22 +1,5 @@
 import request from '@/utils/request'
 
-export function alldevice(page, size) {
-  return request({
-    url: '/device/masterList',
-    method: 'get',
-    params: {
-      page,
-      size
-    }
-  })
-}
-export function master() {
-  return request({
-    url: '/device/master',
-    method: 'get'
-
-  })
-}
 export function deverror() {
   return request({
     url: '/device/errorList',
@@ -53,5 +36,25 @@ export function indexList() {
   return request({
     url: '/device/indexList',
     method: 'get'
+  })
+}
+export function deviceSwitch(saddr, sw) {
+  return request({
+    url: '/device/switch',
+    method: 'get',
+    params: {
+      saddr,
+      sw
+    }
+  })
+}
+export function deviceLamp(saddr, lamp) {
+  return request({
+    url: '/device/light',
+    method: 'get',
+    params: {
+      saddr,
+      lamp
+    }
   })
 }
