@@ -38,23 +38,36 @@ export function indexList() {
     method: 'get'
   })
 }
-export function deviceSwitch(saddr, sw) {
+export function deviceSwitch(maddr,saddr, sw) {
   return request({
     url: '/device/switch',
     method: 'get',
     params: {
+      maddr,
       saddr,
       sw
     }
   })
 }
-export function deviceLamp(saddr, lamp) {
+export function deviceLamp(maddr,saddr, lamp) {
   return request({
     url: '/device/light',
     method: 'get',
     params: {
+      maddr,
       saddr,
       lamp
+    }
+  })
+}
+export function deviceSleep(maddr,saddr,sleep) {
+  return request({
+    url: '/device/sleep',
+    method: 'get',
+    params: {
+      maddr,
+      saddr,
+      sleep
     }
   })
 }

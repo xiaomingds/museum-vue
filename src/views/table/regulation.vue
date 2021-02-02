@@ -48,28 +48,40 @@
           </template>
         </el-table-column>
 
-      <el-table-column prop="temperature_max" label="最高温度/℃" />
-      <el-table-column prop="temperature_min" label="最低温度/℃" />
-      <el-table-column prop="humidity_max" label="最大湿度/%RH" />
-      <el-table-column prop="humidity_min" label="最小湿度/%RH" />
+      <el-table-column prop="temperature_max" label="最高温度/℃"  width="100px" />
+      <el-table-column prop="temperature_min" label="最低温度/℃" width="100px"/>
+      <el-table-column prop="humidity_max" label="最大湿度/%RH" width="120px"/>
+      <el-table-column prop="humidity_min" label="最小湿度/%RH" width="120px"/>
+        <el-table-column prop="batterycapacity_min" label="最小电量/%" width="120px"/>
 
-        <el-table-column prop="lamp" label="灯亮度" width="110px">
+        <el-table-column prop="lamp" label="灯亮度"  align="center">
           <template slot-scope="scope">
             <el-slider v-model="scope.row.lamp"
                        :format-tooltip = "formatTooltip"
-                       @change="getlamp">
+                       @change="getlamp(scope.row)">
             </el-slider>
           </template>
         </el-table-column>
 
-        <el-table-column prop="batterycapacity_min" label="最小电量/%" width="100px"/>
-      <el-table-column prop="sleep" label="休眠时间/s" />
-<!--      <el-table-column label="编辑" width="100">-->
+        <el-table-column align="center" label="休眠时间/s"  width="160">
+          <template slot-scope="{row}">
+
+            <el-input-number v-model="row.sleep" @change="handleChange" :min="5" :max="60" size="small">
+            </el-input-number>
+          </template>
+        </el-table-column>
+        <el-table-column label="确认" width="100" align="center">
+          <template slot-scope="scope">
+            <el-button  @click="postsleep(scope.row)" type="success" icon="el-icon-check" circle></el-button>
+          </template>
+        </el-table-column>
+<!--      <el-table-column label="确认" width="100">-->
 <!--        <template slot-scope="scope">-->
-<!--          <el-button  @click="editdevice(scope.row)" type="warning" icon="el-icon-edit" circle></el-button>-->
+<!--          <el-button  @click="editdevice(scope.row)" type="success" icon="el-icon-edit" circle></el-button>-->
 <!--        </template>-->
 <!--      </el-table-column>-->
     </el-table>
+
     <el-dialog
       title="修改环境信息"
       style="text-align:left !important"
@@ -108,7 +120,7 @@
 
 
 <script>
-  import { slaveList, mmslaveList,editDevice,deviceSwitch} from '@/api/device'
+  import { slaveList, mmslaveList,editDevice,deviceSwitch,deviceLamp,deviceSleep} from '@/api/device'
   import { master } from '@/api/master'
 
   export default {
@@ -120,6 +132,8 @@
         selmaddr:'',
         addFlag: true,
         dialogVisible: false,
+        lamp: '',
+        sleep:""
       }
     },
     mounted() { // 页面加载时默认加载的函数
@@ -128,6 +142,7 @@
 
     },
     methods: {
+
       tableRowClassName({row, rowIndex}) {//表格隔行显示不同的颜色
         if (rowIndex %2 ===0) {
           return 'success-row';
@@ -136,7 +151,7 @@
       },
       changeSwitch (row) {//询问门是否打开
         const saddr = row.saddr;
-
+        const maddr = row.maddr;
         let flag = row.door //保存点击之后v-modeld的值(true，false)
         row.door = !row.door //保持switch点击前的状态
         this.$confirm('此操作将打开/关闭门, 是否继续?', '提示', {
@@ -144,7 +159,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          deviceSwitch(saddr,flag)
+          deviceSwitch(maddr,saddr,flag)
           if(flag){
             row.door = true
             // 逻辑处理
@@ -161,12 +176,26 @@
           });
         });
       },
+      //slider滑块
       formatTooltip(val){
+        // console.log("但前值 " + val)
+          this.lamp = val;
         return val;
       },
-      getlamp(){
-          console.log("鼠标松开后的值 " + this.lamp)
+
+      getlamp(row){
+          console.log("鼠标松开后的值 " + this.lamp + "设备地址 " + row.saddr)
+        deviceLamp(row.maddr,row.saddr,this.lamp)
       },
+      //计数器
+      handleChange(value) {
+        this.sleep  = value;
+      },
+      postsleep(row){
+        console.log("鼠标松开后的值 " + this.sleep + "设备地址 " + row.saddr)
+        deviceSleep(row.maddr,row.saddr,row.sleep)
+      },
+
       // 异步好一些
       async getgatewayList() {
         const { data } = await slaveList()

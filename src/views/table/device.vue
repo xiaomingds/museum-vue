@@ -42,7 +42,12 @@
 <!--      </el-table-column>-->
 
       <el-table-column prop="batterycapacity" label="当前电量/%" />
-      <el-table-column prop="sleep" label="休眠时间/s" />
+      <el-table-column align="center" label="休眠时间/s"  width="100">
+        <template slot-scope="{row}">
+          <el-tag type="warning" effect="dark">  {{ row.sleep }}秒</el-tag>
+
+        </template>
+      </el-table-column>
       <el-table-column prop="errorcode" label="故障码" />
       <el-table-column prop="dtime" label="上报时间" />
     </el-table>
