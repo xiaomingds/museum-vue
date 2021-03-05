@@ -1,5 +1,4 @@
-
-
+@vue/cli 4.5.9
 
 # install dependency
 npm install
