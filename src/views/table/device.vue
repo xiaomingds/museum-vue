@@ -31,7 +31,7 @@
       <el-table-column prop="maddr" label="所属网关" />
       <el-table-column prop="saddr" label="物理地址" />
       <el-table-column prop="status" label="当前状态" />
-      <el-table-column prop="temperature" label="当前温度/℃" />
+      <el-table-column prop="temperature" label="当前温度/℃"/>
       <el-table-column prop="humidity" label="当前湿度/%RH" />
 
 <!--      <el-table-column prop="on_off" label="开关" width="80" align="center">-->

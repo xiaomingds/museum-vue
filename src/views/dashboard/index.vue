@@ -3,7 +3,7 @@
           :data="datalist"
   >
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
+      <div class="card-panel"  @click="$router.push('/example/user')">
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="people" class-name="card-panel-icon" />
         </div>
@@ -16,7 +16,7 @@
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('messages')">
+      <div class="card-panel" @click="$router.push('/getway/master')">
         <div class="card-panel-icon-wrapper icon-message">
           <svg-icon icon-class="network" class-name="card-panel-icon" />
         </div>
@@ -29,7 +29,7 @@
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('purchases')">
+      <div class="card-panel"  @click="$router.push('/getway/device')">
         <div class="card-panel-icon-wrapper icon-money">
           <svg-icon icon-class="device" class-name="card-panel-icon" />
         </div>
@@ -42,7 +42,7 @@
       </div>
     </el-col>
       <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
+      <div class="card-panel"  @click="$router.push('/getway/regulation')">
         <div class="card-panel-icon-wrapper icon-shopping">
           <svg-icon icon-class="devicew" class-name="card-panel-icon" />
         </div>

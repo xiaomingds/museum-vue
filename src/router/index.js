@@ -42,8 +42,8 @@ export const asyncRoutes = [
     meta: { title: '人员管理', icon: 'example', roles: ['admin'] },
     children: [
       {
-        path: 'table',
-        name: 'Table',
+        path: 'user',
+        name: 'User',
         component: () => import('@/views/table/user'),
         meta: { title: '员工管理', icon: 'user', roles: ['admin'] } // you can set roles in root nav
       }
@@ -69,8 +69,8 @@ export const asyncRoutes = [
     meta: { title: '基础设备', icon: 'exit-fullscreen'},
     children: [
       {
-        path: 'table',
-        name: 'Table',
+        path: 'master',
+        name: 'Master',
         component: () => import('@/views/table/master'),
         meta: { title: '网关', icon: 'table' }
       },
