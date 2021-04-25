@@ -35,6 +35,18 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
+    path: '/show',
+    component: Layout,
+    children: [
+      {
+        path: 'show',
+        name: 'show',
+        component: () => import('@/views/dashboard/show'),
+        meta: { title: '全部环境', icon: 'chart'}
+      }
+    ]
+  },
+  {
     path: '/example',
     component: Layout,
     redirect: '/example/table',

@@ -34,3 +34,16 @@ export function masterSwitch(maddr, sw) {
     }
   })
 }
+export function masterTime(maddr) {
+  return request({
+    url: '/master/retime',
+    method: 'get',
+    params: {maddr}
+  })
+}
+export function allmd() {
+  return request({
+    url: '/master/ldevice',
+    method: 'get'
+  })
+}
