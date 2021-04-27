@@ -18,17 +18,17 @@
       <el-table-column prop="ipaddr" label="IP地址"   align="center"/>
       <el-table-column prop="ostatuscode" label="状态码"  align="center" />
       <el-table-column prop="ltime" label="最后一次上报时间"   align="center"/>
-      <el-table-column property="sw" label="网关开关" width="80px" align="center">
-        <template scope="scope">
-          <el-switch
-            active-color="#13ce66"
-            inactive-color="#dadde5"
-            v-model="scope.row.sw"
-            @change=changeSwitch(scope.row)
-          >
-          </el-switch>
-        </template>
-      </el-table-column>
+<!--      <el-table-column property="sw" label="网关开关" width="80px" align="center">-->
+<!--        <template scope="scope">-->
+<!--          <el-switch-->
+<!--            active-color="#13ce66"-->
+<!--            inactive-color="#dadde5"-->
+<!--            v-model="scope.row.sw"-->
+<!--            @change=changeSwitch(scope.row)-->
+<!--          >-->
+<!--          </el-switch>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="时钟同步" width="100"   align="center">
         <template slot-scope="scope">
 <!--          <el-button type="info"  icon="refresh" size="mini" @click="retime(scope.row)" circle>清空</el-button>-->

@@ -24,16 +24,7 @@ export function masterRest(maddr) {
     params: {maddr}
   })
 }
-export function masterSwitch(maddr, sw) {
-  return request({
-    url: '/master/switch',
-    method: 'get',
-    params: {
-      maddr,
-      sw
-    }
-  })
-}
+
 export function masterTime(maddr) {
   return request({
     url: '/master/retime',

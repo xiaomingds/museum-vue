@@ -86,17 +86,17 @@ export const asyncRoutes = [
         component: () => import('@/views/table/master'),
         meta: { title: '网关', icon: 'table' }
       },
-      {
-        path: 'device',
-        name: 'Device',
-        component: () => import('@/views/table/device'),
-        meta: { title: '设备', icon: 'fullscreen'}
-      },
+      // {
+      //   path: 'device',
+      //   name: 'Device',
+      //   component: () => import('@/views/table/device'),
+      //   meta: { title: '设备', icon: 'fullscreen'}
+      // },
       {
         path: 'regulation',
         name: 'regulation',
         component: () => import('@/views/table/regulation'),
-        meta: { title: '环境调控', icon: 'drag'}
+        meta: { title: '环境列表', icon: 'drag'}
       },
       // {
       //   path: 'line',

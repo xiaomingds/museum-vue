@@ -27,7 +27,7 @@
         :data="devicelist"
         style="width: 100%"
         border
-        :row-class-name="tableRowClassName">
+        :row-class-name="tableRowClassName" align="center">
       <el-table-column label="序号" type="index" width="50px" align="center">
         <template slot-scope="scope">
           <span>{{scope.$index + 1 }}</span>
@@ -36,17 +36,21 @@
       <el-table-column prop="maddr" label="所属网关" width="50px"  />
       <el-table-column prop="saddr" label="物理地址" width="80px" />
 
-        <el-table-column property="door" label="门开关" width="80px">
-          <template scope="scope">
-            <el-switch
-              active-color="#13ce66"
-              inactive-color="#dadde5"
-              v-model="scope.row.door"
-              @change=changeSwitch(scope.row)
-            >
-            </el-switch>
-          </template>
-        </el-table-column>
+<!--        <el-table-column property="door" label="门开关" width="80px">-->
+<!--          <template scope="scope">-->
+<!--            <el-switch-->
+<!--              active-color="#13ce66"-->
+<!--              inactive-color="#dadde5"-->
+<!--              v-model="scope.row.door"-->
+<!--              @change=changeSwitch(scope.row)-->
+<!--            >-->
+<!--            </el-switch>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
+        <el-table-column prop="status" label="当前状态" width="100px" />
+        <el-table-column prop="temperature" label="当前温度/℃" width="100px" />
+        <el-table-column prop="humidity" label="当前湿度/%RH" width="100px" />
+        <el-table-column prop="batterycapacity" label="当前电量/%" width="100px" />
 
       <el-table-column prop="temperature_max" label="最高温度/℃"  width="100px" />
       <el-table-column prop="temperature_min" label="最低温度/℃" width="100px"/>
@@ -54,14 +58,14 @@
       <el-table-column prop="humidity_min" label="最小湿度/%RH" width="120px"/>
         <el-table-column prop="batterycapacity_min" label="最小电量/%" width="120px"/>
 
-        <el-table-column prop="lamp" label="灯亮度"  align="center">
-          <template slot-scope="scope">
-            <el-slider v-model="scope.row.lamp"
-                       :format-tooltip = "formatTooltip"
-                       @change="getlamp(scope.row)">
-            </el-slider>
-          </template>
-        </el-table-column>
+<!--        <el-table-column prop="lamp" label="灯亮度"  align="center">-->
+<!--          <template slot-scope="scope">-->
+<!--            <el-slider v-model="scope.row.lamp"-->
+<!--                       :format-tooltip = "formatTooltip"-->
+<!--                       @change="getlamp(scope.row)">-->
+<!--            </el-slider>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
 
         <el-table-column align="center" label="休眠时间/s"  width="160">
           <template slot-scope="{row}">
@@ -184,7 +188,7 @@
       },
 
       getlamp(row){
-          console.log("鼠标松开后的值 " + this.lamp + "设备地址 " + row.saddr)
+        console.log("鼠标松开后的值 " + this.lamp + "设备地址 " + row.saddr)
         deviceLamp(row.maddr,row.saddr,this.lamp)
       },
       //计数器

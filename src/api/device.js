@@ -38,24 +38,24 @@ export function indexList() {
     method: 'get'
   })
 }
-export function deviceSwitch(maddr,saddr, sw) {
+export function doorSwitch(maddr,door_address,sw) {
   return request({
     url: '/device/switch',
     method: 'get',
     params: {
       maddr,
-      saddr,
+      door_address,
       sw
     }
   })
 }
-export function deviceLamp(maddr,saddr, lamp) {
+export function deviceLamp(maddr,lamp_address, lamp) {
   return request({
     url: '/device/light',
     method: 'get',
     params: {
       maddr,
-      saddr,
+      lamp_address,
       lamp
     }
   })
@@ -72,3 +72,14 @@ export function deviceSleep(maddr,saddr,sleep) {
   })
 }
 
+export function otherSwitch(maddr,relay_address,sw) {
+  return request({
+    url: '/device/otherswitch',
+    method: 'get',
+    params: {
+      maddr,
+      relay_address,
+      sw
+    }
+  })
+}
