@@ -6,7 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || 'vue Admin Template' // page title
+const name = defaultSettings.title || 'museum' // page title
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
 // For example, Mac: sudo npm run
@@ -21,7 +21,11 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  publicPath: '/',
+  // npm run build:prod
+  // npm run build:stage
+
+
+  publicPath: './',
   outputDir: 'dist',
   assetsDir: 'static',
   // lintOnSave: process.env.NODE_ENV === 'development',
@@ -38,7 +42,7 @@ module.exports = {
     proxy: {
       //配置跨域
       '/api': {
-        target: "http://localhost:8088", //测试服接口地址
+        target: 'http://localhost:8088/', //测试服接口地址
         ws: true,
         changOrigin: true,
         pathRewrite: {

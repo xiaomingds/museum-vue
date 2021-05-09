@@ -83,3 +83,13 @@ export function otherSwitch(maddr,relay_address,sw) {
     }
   })
 }
+export function findSwitch(mid,door_address) {
+  return request({
+    url: '/device/findswitch',
+    method: 'get',
+    params: {
+      mid,
+      door_address
+    }
+  })
+}

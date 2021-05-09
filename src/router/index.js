@@ -25,7 +25,7 @@ export const constantRoutes = [
     children: [{
       path: 'dashboard',
       name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
+      component: () => import('@/views/dashboard/show'),
       meta: { title: '智慧博物馆', icon: 'dashboard' }
     }]
   }
@@ -34,45 +34,45 @@ export const constantRoutes = [
  * 动态路由
  */
 export const asyncRoutes = [
-  {
-    path: '/show',
-    component: Layout,
-    children: [
-      {
-        path: 'show',
-        name: 'show',
-        component: () => import('@/views/dashboard/show'),
-        meta: { title: '全部环境', icon: 'chart'}
-      }
-    ]
-  },
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: '人员管理', icon: 'example', roles: ['admin'] },
-    children: [
-      {
-        path: 'user',
-        name: 'User',
-        component: () => import('@/views/table/user'),
-        meta: { title: '员工管理', icon: 'user', roles: ['admin'] } // you can set roles in root nav
-      }
-      // {
-      //   path: 'tree',
-      //   name: 'Tree',
-      //   component: () => import('@/views/tree/index'),
-      //   meta: { title: '角色管理', icon: 'eye-open' }
-      // },
-      // {
-      //   path: 'tree',
-      //   name: 'Tree',
-      //   component: () => import('@/views/tree/index'),
-      //   meta: { title: '权限', icon: 'tree' }
-      // }
-    ]
-  },
+  // {
+  //   path: '/show',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'show',
+  //       name: 'show',
+  //       component: () => import('@/views/dashboard/show'),
+  //       meta: { title: '全部环境', icon: 'chart'}
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/example',
+  //   component: Layout,
+  //   redirect: '/example/table',
+  //   name: 'Example',
+  //   meta: { title: '人员管理', icon: 'example', roles: ['admin'] },
+  //   children: [
+  //     {
+  //       path: 'user',
+  //       name: 'User',
+  //       component: () => import('@/views/table/user'),
+  //       meta: { title: '员工管理', icon: 'user', roles: ['admin'] } // you can set roles in root nav
+  //     }
+  //     // {
+  //     //   path: 'tree',
+  //     //   name: 'Tree',
+  //     //   component: () => import('@/views/tree/index'),
+  //     //   meta: { title: '角色管理', icon: 'eye-open' }
+  //     // },
+  //     // {
+  //     //   path: 'tree',
+  //     //   name: 'Tree',
+  //     //   component: () => import('@/views/tree/index'),
+  //     //   meta: { title: '权限', icon: 'tree' }
+  //     // }
+  //   ]
+  // },
   {
     path: '/getway',
     component: Layout,
