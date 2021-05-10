@@ -24,13 +24,17 @@ export function masterRest(maddr) {
     params: {maddr}
   })
 }
-export function masterSwitch(maddr, sw) {
+
+export function masterTime(maddr) {
   return request({
-    url: '/master/switch',
+    url: '/master/retime',
     method: 'get',
-    params: {
-      maddr,
-      sw
-    }
+    params: {maddr}
+  })
+}
+export function allmd() {
+  return request({
+    url: '/master/ldevice',
+    method: 'get'
   })
 }

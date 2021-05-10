@@ -141,6 +141,7 @@ $cursor: #fff;
 
 /* reset element-ui css */
 .login-container {
+
   .el-input {
     display: inline-block;
     height: 47px;
@@ -178,11 +179,13 @@ $dark_gray:#889aa4;
 $light_gray:#eee;
 
 .login-container {
-  min-height: 100%;
-  width: 100%;
-  background-color: $bg;
-  overflow: hidden;
 
+  width: 100%;
+  height: 100%;
+  background-image: url("../../assets/login_images/login_bg.jpg");
+  background-size: cover;
+  background-position: center;
+  position: relative;
   .login-form {
     position: relative;
     width: 520px;

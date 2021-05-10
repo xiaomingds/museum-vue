@@ -6,29 +6,37 @@
       border
       fit
       highlight-current-row
+
     >
       <el-table-column label="序号" type="index" width="80px" align="center">
         <template slot-scope="scope">
           <span>{{ (page - 1) * size + scope.$index + 1 }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="maddr" label="物理地址" />
-      <el-table-column prop="status" label="设备状态" />
-      <el-table-column prop="ipaddr" label="IP地址" />
-      <el-table-column prop="ostatuscode" label="状态码" />
-      <el-table-column prop="ltime" label="最后一次上报时间" />
-      <el-table-column property="sw" label="网关开关" width="80px">
-        <template scope="scope">
-          <el-switch
-            active-color="#13ce66"
-            inactive-color="#dadde5"
-            v-model="scope.row.sw"
-            @change=changeSwitch(scope.row)
-          >
-          </el-switch>
+      <el-table-column prop="maddr" label="物理地址"    align="center"/>
+      <el-table-column prop="status" label="设备状态"   align="center"/>
+      <el-table-column prop="ipaddr" label="IP地址"   align="center"/>
+      <el-table-column prop="ostatuscode" label="状态码"  align="center" />
+      <el-table-column prop="ltime" label="最后一次上报时间"   align="center"/>
+<!--      <el-table-column property="sw" label="网关开关" width="80px" align="center">-->
+<!--        <template scope="scope">-->
+<!--          <el-switch-->
+<!--            active-color="#13ce66"-->
+<!--            inactive-color="#dadde5"-->
+<!--            v-model="scope.row.sw"-->
+<!--            @change=changeSwitch(scope.row)-->
+<!--          >-->
+<!--          </el-switch>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+      <el-table-column label="时钟同步" width="100"   align="center">
+        <template slot-scope="scope">
+<!--          <el-button type="info"  icon="refresh" size="mini" @click="retime(scope.row)" circle>清空</el-button>-->
+          <el-button type="warning" icon="el-icon-refresh" @click="retime(scope.row)" circle></el-button>
+
         </template>
       </el-table-column>
-      <el-table-column label="清空状态" width="100">
+      <el-table-column label="清空状态" width="100" align="center">
         <template slot-scope="scope">
           <el-button type="primary"  size="mini" @click="rest(scope.row)">清空</el-button>
         </template>
@@ -63,7 +71,7 @@
 </template>
 
 <script>
-import { allMaster,masterRest,masterSwitch} from '@/api/master'
+import { allMaster,masterRest,masterSwitch,masterTime} from '@/api/master'
 
 export default {
   data() {
@@ -156,8 +164,24 @@ export default {
           message: '已取消清空'
         });
       });
-    }
+    },
+    retime(row){
+      const maddr = row.maddr;
+      this.$confirm('是否同步网关时钟', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        masterTime(maddr)
+        this.$message.success('同步成功!')
 
+
+      }).catch(() => {
+        this.$message({
+          type: 'info'
+        });
+      });
+    }
   }
 }
 </script>
