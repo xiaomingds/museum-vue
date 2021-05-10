@@ -57,7 +57,7 @@
               v-model="l.bright"
               vertical
               height="150px"
-              @change="getlamp(data.maddr,l.lamp_address,l.bright)">
+              @change="changelamp(data.maddr,l.lamp_address,l.bright)">
             </el-slider> <br>
             <span>灯:{{l.rid}}</span>&nbsp;&nbsp;&nbsp;
           </div>
@@ -93,7 +93,7 @@
 
 <script>
   import {allmd} from '@/api/master'
-  import {doorSwitch,deviceLamp,otherSwitch,findSwitch} from '@/api/device'
+  import {doorSwitch,deviceLamp,otherSwitch,findSwitch,findLamp,findRelay} from '@/api/device'
 
   export default {
     provide () {
@@ -106,7 +106,12 @@
         isRouterAlive: true,
         allmade:[],
         timer:null,
-        door:null
+        lamptimer:null,
+        relaytimer:null,
+
+        door:null,
+        lamp: null,
+        relay: null
       }
     },
     mounted() { // 页面加载时默认加载的函数
@@ -123,11 +128,12 @@
         }).then(() => {
           doorSwitch(maddr,door_address,sw)
           //定时轮询
-          this.timer = window.setInterval(() => {
-            setTimeout(() => {
+          var s = 0;//设置轮询次数
+          this.timer = window.setInterval(() => {//定时器
               this.getDoor(maddr,door_address)
-              console.log("找到的开关 "+this.door.sw +"   "+sw)
-              if (this.door.sw == sw && this.timer <=9000){
+               s++
+              console.log("找到的开关 "+this.door.sw +"   "+sw + "  "+ s)
+              if (this.door.sw == sw){
                   clearInterval(this.timer);
                 if(sw){
                   this.$message.success('打开成功!')
@@ -137,7 +143,7 @@
                 this.getallmade()
               }
 
-              else {
+              if(s > 5){
                 clearInterval(this.timer);
                 if(sw){
                   this.$message.error('打开门失败!')
@@ -146,9 +152,7 @@
                 }
                 this.getallmade()
               }
-
-            },0)
-          },3000)
+          },1000)
 
 
         }).catch(() => {
@@ -158,27 +162,70 @@
           });
         });
       },
-      getlamp(maddr,lamp_address,lamp){
-        console.log("鼠标松开后的值 "+ lamp+" "+ lamp_address + "设备地址 "+ maddr )
+
+      changelamp(maddr,lamp_address,lamp){
         deviceLamp(maddr,lamp_address,lamp)
+        console.log("要调节的亮度   "+lamp)
+        if(lamp ==100)
+          lamp =99;
+        var  ls = 0;
+        this.lamptimer = window.setInterval(() => {//定时器
+           this.getLamp(maddr,lamp_address)
+           ls++;
+            console.log("找到的灯 "+this.lamp.bright +"   "+ls)
+            if (this.lamp.bright == lamp){
+              clearInterval(this.lamptimer);
+              this.$message.success('灯亮度调节成功')
+              this.getallmade()
+            }
+
+            if(ls > 5) {
+              clearInterval(this.lamptimer);
+              this.$message.error('灯亮度调节失败')
+              this.getallmade()
+            }
+
+        },3000)
+
       },
       changeother(maddr,relay_address,sw) {//询问门是否打开
 
-        this.$confirm('此操作将打开/关闭门, 是否继续?', '提示', {
+        this.$confirm('此操作将打开/关闭继电器, 是否继续?', '提示', {
 
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          console.log("@@@门"+maddr+"  "+ relay_address + "  "+sw)
-
           otherSwitch(maddr,relay_address,sw)
+          console.log("@@@继电器"+maddr+"  "+ relay_address + "  "+sw)
 
-          if(sw){
-            this.$message.success('打开成功!')
-          }else{
-            this.$message.success('关闭成功')
-          }
+          //定时轮询
+          var s = 0;//设置轮询次数
+          this.relaytimer = window.setInterval(() => {//定时器
+            this.getRelay(maddr,relay_address)
+            s++
+            console.log("找到的开关 "+this.relay.sw +"   "+sw + "  "+ s)
+            if (this.relay.sw == sw){
+              clearInterval(this.relaytimer);
+              if(sw){
+                this.$message.success('打开成功!')
+              }else{
+                this.$message.success('关闭成功')
+              }
+              this.getallmade()
+            }
+
+            if(s > 5){
+              clearInterval(this.relaytimer);
+              if(sw){
+                this.$message.error('打开失败!')
+              }else{
+                this.$message.error('关闭失败')
+              }
+              this.getallmade()
+            }
+          },1000)
+
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -198,11 +245,24 @@
        // console.log('请求到的门' + '  ' +data.sw + '  ' + data)
         // this.total = data.total
       },
+      async getLamp(maddr,lamp_address) {
+        const { data } = await findLamp(maddr,lamp_address)
+        this.lamp = data
+        // console.log('请求到的灯' + '  ' +data.bright+ '  ' + data)
+      },
+      async getRelay(maddr,relay_address) {
+        const { data } = await findRelay(maddr,relay_address)
+        this.relay = data
+      },
+
     },
 
     beforeDestroy(){
       clearInterval(this.timer);
+
       this.timer = null;
+      this.lamptimer = null;
+      this.relaytimer = null;
     }
 
 

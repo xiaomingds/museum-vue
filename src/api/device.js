@@ -93,3 +93,22 @@ export function findSwitch(mid,door_address) {
     }
   })
 }
+export function findLamp(mid,lamp_address) {
+  return request({
+    url: '/device/findlamp',
+    method: 'get',
+    params: {
+      mid,
+      lamp_address
+    }
+  })
+}export function findRelay(mid,relay_address) {
+  return request({
+    url: '/device/findrelay',
+    method: 'get',
+    params: {
+      mid,
+      relay_address
+    }
+  })
+}
